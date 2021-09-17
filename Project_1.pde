@@ -1,6 +1,6 @@
 PImage bgi;
 Mover ball;
-int ballAll = 10;
+int ballAll = 20;
 ArrayList<Mover> baList = new ArrayList<Mover>();
 //Mover[] baList = new Mover[10];
 
@@ -21,6 +21,8 @@ void draw() {
     for (int i = 0;i < baList.size();i++) {
         baList.get(i).move();
     }
+    textSize(100);
+    text(baList.get(0).dieCount,100,300);
     //ball.move();
 }
 
