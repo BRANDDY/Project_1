@@ -2,28 +2,30 @@ PImage bgi;
 Mover ball;
 int ballAll = 20;
 ArrayList<Mover> baList = new ArrayList<Mover>();
-//Mover[] baList = new Mover[10];
+lands[] land;
 
 void setup() {
     size(800,600);
     bgi = loadImage("BGI.png");  
     bgiDemo();
-    //ball = new Mover();
-    for (int i = 0;i < ballAll;i++) {
-        ball = new Mover();
-        baList.add(ball);
-    }
+    setBallarray();
+    setLandarray();
 }
 
 void draw() {
     bgiDemo();
     measure();
     for (int i = 0;i < baList.size();i++) {
-        baList.get(i).move();
+        baList.get(i).update(i);
+        //textSize(20);
+        //fill(250);
+        //text(i,baList.get(i).location.x-10,baList.get(i).location.y+10);
     }
+    for (int i = 0;i < 3;i++) {
+        land[i].update();
+    }    
     textSize(100);
-    text(baList.get(0).dieCount,100,300);
-    //ball.move();
+    text(baList.size(),100,300);
 }
 
 void bgiDemo() {
@@ -42,5 +44,6 @@ void measure() {
         text(mouseX,mouseX,mouseY + 30);
         textSize(50);
         text(mouseY,mouseX + 100,mouseY + 30);
+        //出现lands的信息
     }
 }
