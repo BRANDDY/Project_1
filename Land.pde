@@ -67,5 +67,6 @@ void setLandarray() {
     land = new lands[6];
     for (int i = 0;i < 6;i++) {
         land[i] = new lands(i);
-        }
+        land[i].landImg.resize(800, 600);
+    }
 }

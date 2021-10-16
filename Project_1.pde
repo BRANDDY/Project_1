@@ -14,7 +14,6 @@ void setup() {
 
 void draw() {
     bgiDemo();
-    measure();
     for (int i = 0;i < baList.size();i++) {
         baList.get(i).update(i);
     }
@@ -27,18 +26,8 @@ void draw() {
 
 void bgiDemo() {
     background(bgi);
-    /*for (int i = 0;i < 6;i++){
+    for (int i = 0;i < 6;i++){
         tint(255, land[i].imgColor);
-        image(land[i].landImg,0,0,800,600);
-    }*/
-}
-void measure() {
-    if (mousePressed) {
-        bgiDemo();
-        textSize(50);
-        text(mouseX,mouseX,mouseY + 30);
-        textSize(50);
-        text(mouseY,mouseX + 100,mouseY + 30);
-        //出现lands的信息
+        image(land[i].landImg,0,0);
     }
 }
