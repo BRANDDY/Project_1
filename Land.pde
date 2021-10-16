@@ -4,29 +4,32 @@ class lands{
     int dieProb = 2000;
     PVector loc;
     PVector size;
+    PImage landImg;
+    int imgColor=180;
     int ballNum;
     int landNo;
     
     lands(int l) {
         landNo = l;
-        getLand(landNo);//根据编号得到作用范围
+        getLand(landNo);//depend on No
     }
     
     void update() {
         if (frameCount % 30 ==  0) {
-            ballCount();//根据编数范围内的ball/每10s？刷新一次
-            
+            ballCount();//update infor/50
+            //ballAll= 1;
+            //setBallarray();//random get a new baby/50
         }
     }
     
     void getLand(int i) {
         switch(i) {
-            case 0 : loc = new PVector(0,0); size = new PVector(180,280); break;
-            case 1 : loc = new PVector(270,0); size = new PVector(250,280); break;
-            case 2 : loc = new PVector(600,0); size = new PVector(200,280); break;
-            case 3 : loc = new PVector(0,300); size = new PVector(200,280); break;
-            case 4 : loc = new PVector(270,300); size = new PVector(200,280); break;
-            case 5 : loc = new PVector(600,300); size = new PVector(200,280); break;
+            case 0 : loc = new PVector(0,0); size = new PVector(180,280); landImg = loadImage("BL.png"); break;
+            case 1 : loc = new PVector(270,0); size = new PVector(250,280); landImg = loadImage("G.png"); break;
+            case 2 : loc = new PVector(600,0); size = new PVector(200,280); landImg = loadImage("YR.png"); break;
+            case 3 : loc = new PVector(0,300); size = new PVector(200,280); landImg = loadImage("YL.png"); break;
+            case 4 : loc = new PVector(270,300); size = new PVector(200,280); landImg = loadImage("R.png"); break;
+            case 5 : loc = new PVector(600,300); size = new PVector(200,280); landImg = loadImage("BR.png"); break;
         }
     }
     
@@ -42,16 +45,19 @@ class lands{
         }   
     }
     int setRules() {
-        if (ballNum > 30) {
-            birProb = 80;
+        if (ballNum > 150) {
+            birProb = 60;
+            imgColor = 50;
         }else if(ballNum < 3){
             birProb = 10;
-            //println("dangers");
-        }else if(ballNum>150){
-            birProb = 200;
+            imgColor = 180;
+        }else if(ballNum>300){
+            birProb = 100;
+            imgColor = 0;
             println("full");
         }else{
-            birProb = 60;
+            birProb = 40;
+            imgColor = 120;
         }
         return birProb;
     }
