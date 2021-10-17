@@ -1,40 +1,39 @@
 class Mover{    
     PVector location;
-    PVector target;
+    PVector target;//moving target
     boolean alive = true;
-    int birProb;
-    int dieProb = 2000;
-    int colorB;
+    int birProb;//limit get new balls
+    int dieProb = 2000;//nature death
+    int ballColor;
     int transparency;
-    int landsNo;
-    int dieCount = 0;
-    int birCount = 0;
+    int onLandNo;//the land that the ball is on right now impact birProb
+    int ageCount = 0;//count balls "age"
     
     Mover() {
         int r = int(random(0,6));
         switch(r) {
             case 0 : 
-                colorB = #1675D8;
+                ballColor = #1675D8;
                 location = new PVector(random(20,160),random(20,260));
                 break;
             case 1 : 
-                colorB = #0F9845;
+                ballColor = #0F9845;
                 location = new PVector(random(290,500),random(20,260));
                 break;
             case 2 : 
-                colorB = #C18F0E;
+                ballColor = #C18F0E;
                 location = new PVector(random(620,780),random(20,260));
                 break;
             case 3 : 
-                colorB = #C18F0E;
+                ballColor = #C18F0E;
                 location = new PVector(random(20,160),random(280,560));
                 break;
             case 4 : 
-                colorB = #A71125;
+                ballColor = #A71125;
                 location = new PVector(random(290,500),random(320,560));
                 break;
             case 5 : 
-                colorB = #1675D8;
+                ballColor = #1675D8;
                 location = new PVector(random(620,780),random(320,560));
                 break;
         }
@@ -44,15 +43,15 @@ class Mover{
         death();
         birth(i);
         fight();
-        move(i);
+        move();
         setTrans();
-        fill(colorB,transparency);
+        fill(ballColor,transparency);
         noStroke();
         ellipseMode(CENTER);
         circle(location.x,location.y,25); 
     }
     
-    void move(int i) {
+    void move() {
         if (PVector.dist(target,location)>1 ||  PVector.dist(target,location)<- 1) {
             PVector dir = PVector.sub(target,location);
             dir.normalize(); 
@@ -66,14 +65,11 @@ class Mover{
         }
     }
     void getRules() {
-        birProb = land[landsNo].setRules();
+        birProb = land[onLandNo].setRules();
     }
-    void death() {
-        dieCount++;
-        if (dieCount > dieProb) {
-            this.alive = false;
-        }
-    }
+
+    //depend on bithProb to get new ball
+    //depend on the distance of balls around(distance=birthprob)
     void birth(int i) {
         boolean bir = true;
         for (int t = 0;t < baList.size();t++) {
@@ -84,24 +80,33 @@ class Mover{
                 bir = false;
             }
         }
-        if (bir && (baList.size()<1000) &&  frameCount>200) {
+        if (bir && (baList.size()<1000) &&  ageCount>200) {//limit balls(in the case)
             ball = new Mover();
             ball.target = new PVector(ball.location.x + int(random( -20,20)),ball.location.y + int(random( -20,20)));
             ball.location = this.location.copy();
-            ball.colorB = this.colorB;
+            ball.ballColor = this.ballColor;
             baList.add(ball);
         }
     }
+    void death() {
+        ageCount++;
+        if (ageCount > dieProb) {
+            this.alive = false;
+        }
+    }
+    //make like growing up
     void setTrans(){
-        transparency=180*dieCount/40;
-        if (transparency>180){
+        if (ageCount>200){
             transparency=180;
+        }else{
+            transparency=180*ageCount/200;
         }
     }
 
+    //when two ball are closing, one will be die
     void fight() {
         for (int t = 0;t < baList.size();t++) {
-            if ((colorB!= baList.get(t).colorB) && 
+            if ((ballColor!= baList.get(t).ballColor) && 
                ((location.x < baList.get(t).location.x + 10) && (location.x>baList.get(t).location.x)) && 
                ((location.y<baList.get(t).location.y + 10) && (location.y>baList.get(t).location.y)))
             {
@@ -117,7 +122,7 @@ class Mover{
 }
 
 void setBallarray() {
-    for (int i = 0;i < ballAll;i++) {
+    for (int i = 0;i < ballStart;i++) {
         ball = new Mover();
         baList.add(ball);
         ball.target = new PVector(ball.location.x + int(random( -20,20)),ball.location.y + int(random( -20,20)));

@@ -1,27 +1,28 @@
-PImage bgi;
+PImage backImg;
+int ballStart = 20;
 Mover ball;
-int ballAll = 20;
 ArrayList<Mover> baList = new ArrayList<Mover>();
 lands[] land;
 
 void setup() {
     size(800,600);
-    bgi = loadImage("BGI.png");  
+    backImg = loadImage("BGI.png"); //background image
     setBallarray();
     setLandarray();
-    bgiDemo();
+    setbackImg();
 }
 
 void draw() {
-    bgiDemo();
+    setbackImg(); 
+    fill(200);  
+    textSize(50);
+    text("Population: "+baList.size(),50,300);
     for (int i = 0;i < 6;i++) {
         land[i].update();
     } 
     for (int i = 0;i < baList.size();i++) {
         baList.get(i).update(i);
-    }   
-    textSize(100);
-    text(baList.size(),100,300);
+    }
     ArrayList<Mover> tempList = new ArrayList<Mover>();
     for (int i = 0;i < baList.size();i++) {
         if(baList.get(i).alive){
@@ -36,10 +37,10 @@ void draw() {
     }
 }
 
-void bgiDemo() {
-    background(bgi);
+void setbackImg() {
+    background(backImg);
     for (int i = 0;i < 6;i++){
-        tint(255, land[i].imgColor);
+        tint(255, land[i].transparency);
         image(land[i].landImg,0,0);
     }
 }
