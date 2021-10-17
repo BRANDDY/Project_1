@@ -14,14 +14,26 @@ void setup() {
 
 void draw() {
     bgiDemo();
-    for (int i = 0;i < baList.size();i++) {
-        baList.get(i).update(i);
-    }
     for (int i = 0;i < 6;i++) {
         land[i].update();
-    }    
+    } 
+    for (int i = 0;i < baList.size();i++) {
+        baList.get(i).update(i);
+    }   
     textSize(100);
     text(baList.size(),100,300);
+    ArrayList<Mover> tempList = new ArrayList<Mover>();
+    for (int i = 0;i < baList.size();i++) {
+        if(baList.get(i).alive){
+            tempList.add(baList.get(i));
+        }
+    }
+    baList=tempList;
+    if (frameCount%30==0){
+        ball = new Mover();
+        baList.add(ball);
+        ball.target = new PVector(ball.location.x + int(random( -20,20)),ball.location.y + int(random( -20,20)));
+    }
 }
 
 void bgiDemo() {

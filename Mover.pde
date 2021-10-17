@@ -1,9 +1,11 @@
 class Mover{    
     PVector location;
     PVector target;
+    boolean alive = true;
     int birProb;
-    int dieProb=2000;
+    int dieProb = 2000;
     int colorB;
+    int transparency;
     int landsNo;
     int dieCount = 0;
     int birCount = 0;
@@ -39,11 +41,12 @@ class Mover{
     }
     void update(int i) {
         getRules();
-        death(i);
+        death();
         birth(i);
-        fight(i);
+        fight();
         move(i);
-        fill(colorB,180);
+        setTrans();
+        fill(colorB,transparency);
         noStroke();
         ellipseMode(CENTER);
         circle(location.x,location.y,25); 
@@ -62,13 +65,13 @@ class Mover{
             }
         }
     }
-    void getRules(){
+    void getRules() {
         birProb = land[landsNo].setRules();
     }
-    void death(int i) {
+    void death() {
         dieCount++;
         if (dieCount > dieProb) {
-            baList.remove(i);
+            this.alive = false;
         }
     }
     void birth(int i) {
@@ -84,24 +87,30 @@ class Mover{
         if (bir && (baList.size()<1000) &&  frameCount>200) {
             ball = new Mover();
             ball.target = new PVector(ball.location.x + int(random( -20,20)),ball.location.y + int(random( -20,20)));
-            ball.location = baList.get(i).location.copy();
-            ball.colorB = baList.get(i).colorB;
+            ball.location = this.location.copy();
+            ball.colorB = this.colorB;
             baList.add(ball);
         }
     }
-    
-    void fight(int i) {
+    void setTrans(){
+        transparency=180*dieCount/40;
+        if (transparency>180){
+            transparency=180;
+        }
+    }
+
+    void fight() {
         for (int t = 0;t < baList.size();t++) {
-            if ((baList.get(i).colorB!=baList.get(t).colorB) && 
+            if ((colorB!= baList.get(t).colorB) && 
                ((location.x < baList.get(t).location.x + 10) && (location.x>baList.get(t).location.x)) && 
                ((location.y<baList.get(t).location.y + 10) && (location.y>baList.get(t).location.y)))
             {
                 int r = int(random(0,2));
                 switch(r) {
-                    case 0 : baList.remove(i); break;
-                    case 1 : baList.remove(t); break;
+                    case 0 : alive = false; break;
+                    case 1 : baList.get(t).alive = false; break;
                 }
-            
+                
             }
         }
     }

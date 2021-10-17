@@ -5,7 +5,7 @@ class lands{
     PVector loc;
     PVector size;
     PImage landImg;
-    int imgColor=180;
+    int imgColor = 180;
     int ballNum;
     int landNo;
     
@@ -15,11 +15,7 @@ class lands{
     }
     
     void update() {
-        if (frameCount % 30 ==  0) {
-            ballCount();//update infor/50
-            //ballAll= 1;
-            //setBallarray();//random get a new baby/50
-        }
+        ballCount();//update infor/50
     }
     
     void getLand(int i) {
@@ -44,21 +40,15 @@ class lands{
             }
         }   
     }
+    
+    //depend on the number of balls on each land(ballNum) reduce bitrh rate(birProb)
+    //show up as the change of bgi transparency 
     int setRules() {
-        if (ballNum > 150) {
-            birProb = 60;
-            imgColor = 50;
-        }else if(ballNum < 3){
-            birProb = 10;
-            imgColor = 180;
-        }else if(ballNum>300){
-            birProb = 100;
-            imgColor = 0;
-            println("full");
-        }else{
-            birProb = 40;
-            imgColor = 120;
+        imgColor = 300 - (600 * ballNum / 100);
+        if (imgColor<0){
+            imgColor=0;
         }
+        birProb = 2* ballNum;
         return birProb;
     }
 }
