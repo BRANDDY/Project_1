@@ -6,12 +6,16 @@ class Mover{
     int dieProb = 2000;//nature death
     int ballColor;
     int transparency;
+    int landNo;
     int onLandNo;//the land that the ball is on right now impact birProb
     int ageCount = 0;//count balls "age"
     
     Mover() {
-        int r = int(random(0,6));
-        switch(r) {
+        landNo = int(random(0,6));
+        setColor();
+    }
+    void setColor(){
+        switch(landNo) {
             case 0 : 
                 ballColor = #1675D8;
                 location = new PVector(random(20,160),random(20,260));
@@ -73,14 +77,14 @@ class Mover{
     void birth(int i) {
         boolean bir = true;
         for (int t = 0;t < baList.size();t++) {
-            if (((i!= t) && (baList.size()<1000)) && 
+            if (((i!= t) && (baList.size()<ballsMax)) && 
                ((location.x - birProb<baList.get(t).location.x + 10) && (location.x + birProb>baList.get(t).location.x - 10)) && 
                ((location.y - birProb<baList.get(t).location.y + 10) && (location.y + birProb>baList.get(t).location.y - 10)))
             {
                 bir = false;
             }
         }
-        if (bir && (baList.size()<1000) &&  ageCount>200) {//limit balls(in the case)
+        if (bir && (baList.size()<ballsMax) &&  ageCount>200) {//limit balls(in the case)
             ball = new Mover();
             ball.target = new PVector(ball.location.x + int(random( -20,20)),ball.location.y + int(random( -20,20)));
             ball.location = this.location.copy();
